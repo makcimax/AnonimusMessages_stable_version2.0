@@ -53,6 +53,7 @@ namespace Client10
 
                 //Метод работы со списком
                 DrawAbonentList(userName, status,allAbonents);
+                //DrawAbonentList(allUsers:allAbonents);
 
                 var h = client.ProvideMessage(id);
                 foreach (var index in h)
@@ -80,6 +81,7 @@ namespace Client10
 
             //Метод работы со списком
             DrawAbonentList(userName, status,allAbonents);
+            //DrawAbonentList(allUsers: allAbonents);
 
             OutputMessage.Enabled  = false;
             OutputMessage.Clear();
@@ -109,6 +111,7 @@ namespace Client10
         private void SendMethod()
         {
             InputMessage.Text = InputMessage.Text.Trim();
+
             if (InputMessage.Text == "")
             {
                 return;
@@ -132,8 +135,15 @@ namespace Client10
                         destination.Add(GetId(tmpName,allAbonents));
                         
                     }
-                    
-                    client.SendMessage(id, destination.ToArray(), InputMessage.Text);
+                    if (destination.Count == 0)
+                    {
+                        MessageBox.Show("Выберите кому отправить сообщение");
+                        return;
+                    }
+                    else 
+                    {
+                        client.SendMessage(id, destination.ToArray(), InputMessage.Text);
+                    }
                 }
 
 
@@ -178,37 +188,35 @@ namespace Client10
             return index;
         }
 
+
+        //private void FindCurrentClient(string userName)
+        //{
+
+        //}
         private void DrawAbonentList(string tmpUserName = "<default>", Status tmpUserStatus = Status.Offline, Dictionary<int, Abonent> allUsers = null)
-        {     
-            foreach(int userId in allUsers.Keys)
+        {
+            int tmpUserIndex = -1;
+
+            foreach (int index in allUsers.Keys)
             {
-                int tmpUserIndex = in_List(allUsers[userId].name);
-                if (tmpUserIndex != -1)
+                tmpUserIndex = in_List(allUsers[index].name);
+
+                if (tmpUserIndex == -1)
                 {
-                    if (userName != allUsers[userId].name)
-                    {
-                        AbonentList.Items[tmpUserIndex] = allUsers[userId].name + ": " + allUsers[userId].status;
-                    }
+                    AbonentList.Items.Add(allUsers[index].name + ": "+ allUsers[index].status);
                 }
                 else
                 {
-                    if (userName != allUsers[userId].name)
-                    {
-                        AbonentList.Items.Add(allUsers[userId].name + ": " + allUsers[userId].status);
-                    }
+                    AbonentList.Items[tmpUserIndex] = allUsers[index].name + ": "+ allUsers[index].status;
                 }
+            }
 
-                tmpUserIndex = in_List(tmpUserName);
+            tmpUserIndex = in_List(tmpUserName);
 
-                if (tmpUserIndex != -1)
-                {
-                    AbonentList.Items[tmpUserIndex] = tmpUserName + ": " + tmpUserStatus;
-                }
-                else 
-                {
-                    AbonentList.Items.Add(tmpUserName + ": " + tmpUserStatus);
-                }
-            }         
+            if (tmpUserIndex == -1)
+                AbonentList.Items.Add(tmpUserName + ": " + tmpUserStatus);
+
+            AbonentList.Items.Remove(userName + ": " + status);
         }
 
         public void cbSendMessage(string senderName, string message)
