@@ -31,7 +31,7 @@ namespace Server
          
         }
 
-        public List<Message> TakeMessagesFromDb(int recipientId)
+        public List<Message> GetMessagesFromDb(int recipientId)
         {
             var context = new DataBaseOfMessages();
             
@@ -61,7 +61,7 @@ namespace Server
 
         }
 
-        public void AddAbonentInDb(int _id, string _name)
+        public void AddAbonentToDb(int _id, string _name)
         {
             var context = new DataBaseOfAbonents();
            
