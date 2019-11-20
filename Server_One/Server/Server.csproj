@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Abonent.cs" />
     <Compile Include="DataBase.cs" />
+    <Compile Include="IDataBase.cs" />
     <Compile Include="IMessageCallback.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="ILogger.cs" />

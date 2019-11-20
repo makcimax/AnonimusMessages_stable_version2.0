@@ -12,48 +12,23 @@ namespace Server
         private Dictionary<int, IMessageCallback> links;
         private Dictionary<int, Abonent> allAbonents;
         private ILogger logger;
+        private IDataOfMessages dataBaseOfMsg;
+        private IDataOfAbonents dataBaseOfAbonents;
         private int idAbonent;
 
         public Server()
         {
-   
-            allAbonents = GetAbonentFromDb();
+            dataBaseOfAbonents = new DataBaseOfAbonents();
+            dataBaseOfMsg = new DataBaseOfMessages();
+
+            allAbonents = dataBaseOfAbonents.GetAbonentFromDb();
 
             links = new Dictionary<int, IMessageCallback>();
             foreach (var abonent in allAbonents)
             links[abonent.Key] = null;
             logger = new ConsoleLogger();
+          
             idAbonent = allAbonents.Count+1;
-        }
-
-        private void AddMessageToDb(int senderId, int recipientId, string textOfMessage)
-        {
-            using (var context = new DataBase())
-            {
-                var message = new Message()
-                {
-                    SenderId = senderId,
-                    RecipientId = recipientId,          
-                    TextOfMessage = textOfMessage
-                };
-
-                context.Messages.Add(message);
-                context.SaveChanges();
-            }
-        }
-
-        private List<Message> TakeMessagesFromDb(int recipientId)
-        {
-            using (var context = new DataBase())
-            {
-                List<Message> messagesInDb = (context.Messages.Where(i => i.RecipientId == recipientId)).ToList();
-
-                foreach (Message message in messagesInDb)
-                    context.Messages.Remove(message);
-
-                context.SaveChanges();
-                return messagesInDb;
-            }
         }
 
         public void SendMessage(int senderId, List<int> recipientNames, string message)
@@ -69,7 +44,7 @@ namespace Server
                     }
                     else
                     {
-                        AddMessageToDb(sender.id, allAbonents[index].id, message);
+                        dataBaseOfMsg.AddMessageToDb(sender.id, allAbonents[index].id, message);
                     }
                 }
 
@@ -85,53 +60,21 @@ namespace Server
                     }
                     else
                     {
-                        AddMessageToDb(senderId, index, message); //сохранить сообщение в базу данных
+                        dataBaseOfMsg.AddMessageToDb(senderId, index, message); //сохранить сообщение в базу данных
                     }
                 }
+                links[senderId].cbSendMessage(sender.name, message);
             }
         }
         public Dictionary<int, Abonent> ShowAbonents(int id) //убрать аргумент
         {
-
-
             return allAbonents;
-
-         //  return null;
         }
 
         public List<Message> ProvideMessage(int id)
         {   
-            return TakeMessagesFromDb(allAbonents[id].id); 
+            return dataBaseOfMsg.TakeMessagesFromDb(allAbonents[id].id); 
         }
-
-
-        private void AddAbonentInDb(int _id,string _name)
-        {
-            using (var context = new DataBaseOfAbonents())
-            {
-
-                var abonent = new Abonent
-                {
-                    id = _id,
-                    name = _name,
-                    status = Status.Offline
-                };
-
-                context.Abonents.Add(abonent);
-                context.SaveChanges();
-            }
-        }
-        private Dictionary<int, Abonent> GetAbonentFromDb()
-        {
-            using (var context = new DataBaseOfAbonents())
-            {
-
-                Dictionary<int,Abonent> abonentsInDb = context.Abonents.ToDictionary(x => x.id , x => x);
-
-                return abonentsInDb;
-            }
-        }
-
 
         public int Connect(string name)
         {
@@ -160,7 +103,7 @@ namespace Server
                     status = Status.Online 
                 };
 
-                AddAbonentInDb(abonent.id,abonent.name);
+                dataBaseOfAbonents.AddAbonentInDb(abonent.id,abonent.name);
 
                 allAbonents.Add(idAbonent++,abonent);
                 links[abonent.id] = OperationContext.Current.GetCallbackChannel<IMessageCallback>();

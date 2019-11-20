@@ -215,6 +215,8 @@ namespace Client10
 
             if (tmpUserIndex == -1)
                 AbonentList.Items.Add(tmpUserName + ": " + tmpUserStatus);
+            else
+                AbonentList.Items[tmpUserIndex] = tmpUserName + ": " + tmpUserStatus;
 
             AbonentList.Items.Remove(userName + ": " + status);
         }
@@ -225,6 +227,7 @@ namespace Client10
         }
         public void cbShowAbonent(Abonent abonent)
         {
+
             //int index = in_List(abonent.name);
             //AbonentList.Items[index] = abonent.name + ": " + abonent.status;
             DrawAbonentList(abonent.name, abonent.status, allAbonents);
@@ -277,7 +280,7 @@ namespace Client10
         private void ShowButton_Click(object sender, EventArgs e)
         {
             allAbonents = client.ShowAbonents(id);
-            DrawAbonentList(allUsers:allAbonents);
+            DrawAbonentList(userName, status,allAbonents);
             //MessageBox.Show("Отрисовал, проверяй");
         }
 
