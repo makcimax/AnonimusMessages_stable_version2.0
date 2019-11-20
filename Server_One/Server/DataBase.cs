@@ -17,7 +17,7 @@ namespace Server
 
     public class DataBaseOfAbonents : DbContext
     {
-        public DataBaseOfAbonents() : base("ConnectionStringToDbOfAbonents1")
+        public DataBaseOfAbonents() : base("ConnectionStringToDbOfAbonents2")
         {
 
         }
