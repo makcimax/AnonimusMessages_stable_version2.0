@@ -51,7 +51,7 @@
             // 
             // InputName
             // 
-            this.InputName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.InputName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(78)))), ((int)(((byte)(78)))));
             this.InputName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.InputName.Location = new System.Drawing.Point(6, 19);
             this.InputName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -97,7 +97,7 @@
             // SendButton
             // 
             this.SendButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.SendButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.SendButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.SendButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.SendButton.Enabled = false;
             this.SendButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -129,7 +129,7 @@
             // 
             // ConnDisconnButton
             // 
-            this.ConnDisconnButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.ConnDisconnButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.ConnDisconnButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ConnDisconnButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ConnDisconnButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
@@ -159,11 +159,11 @@
             // 
             // LoginPanel
             // 
-            this.LoginPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.LoginPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(58)))), ((int)(((byte)(58)))));
             this.LoginPanel.Controls.Add(this.InputName);
             this.LoginPanel.Controls.Add(this.ExitButton);
             this.LoginPanel.Controls.Add(this.ConnDisconnButton);
-            this.LoginPanel.ForeColor = System.Drawing.Color.White;
+            this.LoginPanel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.LoginPanel.Location = new System.Drawing.Point(206, 13);
             this.LoginPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.LoginPanel.Name = "LoginPanel";
@@ -187,10 +187,10 @@
             // 
             // AbonentListPanel
             // 
-            this.AbonentListPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.AbonentListPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(58)))), ((int)(((byte)(58)))));
             this.AbonentListPanel.Controls.Add(this.ForAllCheck);
             this.AbonentListPanel.Controls.Add(this.ShowButton);
-            this.AbonentListPanel.ForeColor = System.Drawing.Color.White;
+            this.AbonentListPanel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.AbonentListPanel.Location = new System.Drawing.Point(12, 13);
             this.AbonentListPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AbonentListPanel.Name = "AbonentListPanel";
@@ -202,7 +202,7 @@
             // 
             // ForAllCheck
             // 
-            this.ForAllCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.ForAllCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.ForAllCheck.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ForAllCheck.Enabled = false;
             this.ForAllCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -218,7 +218,7 @@
             // 
             // ShowButton
             // 
-            this.ShowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.ShowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(54)))), ((int)(((byte)(54)))));
             this.ShowButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.ShowButton.Enabled = false;
             this.ShowButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -235,7 +235,7 @@
             // Customization
             // 
             this.Customization.Controls.Add(this.ChatThemesList);
-            this.Customization.ForeColor = System.Drawing.Color.White;
+            this.Customization.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.Customization.Location = new System.Drawing.Point(544, 13);
             this.Customization.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Customization.Name = "Customization";
@@ -247,7 +247,7 @@
             // 
             // ChatThemesList
             // 
-            this.ChatThemesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.ChatThemesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(78)))), ((int)(((byte)(78)))));
             this.ChatThemesList.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ChatThemesList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.ChatThemesList.FormattingEnabled = true;
@@ -266,7 +266,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(58)))), ((int)(((byte)(58)))));
             this.ClientSize = new System.Drawing.Size(801, 449);
             this.Controls.Add(this.Customization);
             this.Controls.Add(this.AbonentListPanel);

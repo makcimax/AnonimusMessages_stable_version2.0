@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using Client10.Service;
 using System.ServiceModel;
 using System.Drawing;
 
 //TODO
-//Перенос строки
-//Проверка на работу сервера
-//Название index
 //Придумайй более удобное обращение к клиенту
-//
 
 
 
@@ -136,7 +131,7 @@ namespace Client10
                     }
                     if (destination.Count == 0)
                     {
-                        MessageBox.Show("Выберите кому отправить сообщение");
+                        MessageBox.Show("Select a user to send a message");
                         return;
                     }
                     else 
@@ -145,7 +140,7 @@ namespace Client10
                     }
                 }
 
-                OutputMessage.Text += "You: " + InputMessage.Text;
+                OutputMessage.Text += "You: " + InputMessage.Text + "\r";
 
                 InputMessage.Clear();
                                                
@@ -166,12 +161,11 @@ namespace Client10
             {
                 try
                 {
-
                     DisconnectMethod();
                 }
                 catch
                 {
-
+                    
                 }
 
                 Application.Exit();
@@ -196,46 +190,12 @@ namespace Client10
             return index;
         }
 
-        //private string MakeName(string name, Status status, Abonent longestUser)
-        //{
-        //    string resultName = name + ": ";
-        //    string tmpName = resultName + status;
-
-        //    string longestName = longestUser.name+": "+longestUser.status;
-
-        //    while (tmpName.Length < longestName.Length)
-        //    {
-        //        resultName += ' ';
-        //        tmpName = resultName + status;
-        //    }
-
-        //    return resultName+status;
-
-        //}
-
-        //private Abonent MaxNameInAbonents(Dictionary<int, Abonent> allUsers)
-        //{
-        //    Abonent maxName = new Abonent();
-        //    maxName.name = "";
-        //    maxName.status = Status.Online;
-            
-        //    foreach(int index in allUsers.Keys)
-        //    {
-        //        if (maxName.name.Length < allUsers[index].name.Length)
-        //        {
-        //            maxName.name   = allUsers[index].name;
-        //            maxName.status = allUsers[index].status;
-        //        }
-        //    }
-
-        //    return maxName;
-        //}
 
         private void DrawAbonentList(string tmpUserName = "<default>", Status tmpUserStatus = Status.Offline, Dictionary<int, Abonent> allUsers = null)
         {
             int tmpUserIndex = -1;
 
-            //Abonent maxSizeName = MaxNameInAbonents(allUsers);
+            
 
             foreach (int index in allUsers.Keys)
             {
@@ -244,12 +204,10 @@ namespace Client10
                 if (tmpUserIndex == -1)
                 {
                     AbonentList.Items.Add(allUsers[index].name + ": "+ allUsers[index].status);
-                    //AbonentList.Items.Add(MakeName(allUsers[index].name, allUsers[index].status, maxSizeName));
                 }
                 else
                 {
                     AbonentList.Items[tmpUserIndex] = allUsers[index].name + ": "+ allUsers[index].status;
-                    //AbonentList.Items[tmpUserIndex] = MakeName(allUsers[index].name, allUsers[index].status, maxSizeName);
                 }
             }
 
@@ -259,11 +217,9 @@ namespace Client10
                 AbonentList.Items.Add(tmpUserName + ": " + tmpUserStatus);
             else
                 AbonentList.Items[tmpUserIndex] = tmpUserName + ": " + tmpUserStatus;
-            //AbonentList.Items.Add(MakeName(tmpUserName, tmpUserStatus, maxSizeName));
 
 
             AbonentList.Items.Remove(userName + ": " + status);
-            //AbonentList.Items.Remove(MakeName(userName, status, maxSizeName));
         }
 
         public void cbSendMessage(string senderName, string message)
@@ -279,7 +235,7 @@ namespace Client10
         {
             if (status == Status.Online)
             {
-                DisconnectMethod();            
+                ExitMethod();             
             }
             else
             {
@@ -289,7 +245,7 @@ namespace Client10
                 }
                 catch
                 {
-                    MessageBox.Show("Sorry, chat is unavailable now");
+                    MessageBox.Show("Sorry, chat is unavailable now. Try later");
                 }
             }
         }
@@ -319,7 +275,7 @@ namespace Client10
                 }
                 catch
                 {
-                    MessageBox.Show("Sorry, chat is unavailable now");
+                    MessageBox.Show("Sorry, chat is unavailable now. Try later");
                 }
             }
         }
@@ -328,17 +284,16 @@ namespace Client10
         {
             if (e.KeyCode == Keys.Enter)
             {
+                InputMessage.Multiline = false;
                 SendMethod();
+                InputMessage.Multiline = true;
             }
         }
 
         private void ShowButton_Click(object sender, EventArgs e)
         {
             allAbonents = client.ShowAbonents(id);
-
-            //DrawAbonentList(userName, status, allAbonents);
             DrawAbonentList(userName, status,allAbonents);
-            //MessageBox.Show("Отрисовал, проверяй");
         }
 
         private void ForAllCheck_Click(object sender, EventArgs e)
@@ -367,30 +322,31 @@ namespace Client10
             {
                 case 0:
                     ChatThemesList.Text = "Dark theme";
-                    this.BackColor = Color.FromArgb(27, 28, 28);
-                    this.ForeColor = Color.White;
+                    this.BackColor = Color.FromArgb(57, 58, 58);
+                    this.ForeColor = Color.FromArgb(252, 247, 247);
 
-                    AbonentListPanel.ForeColor = Color.White;
-                    ShowButton.BackColor = Color.FromArgb(37, 38, 38);
-                    ShowButton.ForeColor = Color.White;
-                    ForAllCheck.ForeColor = Color.White;
-                    ForAllCheck.BackColor = Color.FromArgb(37, 38, 38);
+                    AbonentListPanel.ForeColor = Color.FromArgb(252, 247, 247);
+                    AbonentListPanel.BackColor = Color.FromArgb(57, 58, 58);
+                    ShowButton.BackColor = Color.FromArgb(52, 54, 54);
+                    ShowButton.ForeColor = Color.FromArgb(252, 247, 247);
+                    ForAllCheck.ForeColor = Color.FromArgb(252, 247, 247);
+                    ForAllCheck.BackColor = Color.FromArgb(52, 54, 54);
 
                     AbonentList.BackColor = Color.FromArgb(37, 38, 38);
                     AbonentList.ForeColor = Color.FromArgb(252, 247, 247);
 
-                    LoginPanel.BackColor = Color.FromArgb(37, 38, 38);
+                    LoginPanel.BackColor = Color.FromArgb(52, 54, 54);
                     LoginPanel.ForeColor = Color.FromArgb(252, 247, 247);
-                    InputName.BackColor = Color.FromArgb(37, 38, 38);
+                    InputName.BackColor = Color.FromArgb(77, 78, 78);
                     InputName.ForeColor = Color.FromArgb(252, 247, 247);
-                    ConnDisconnButton.BackColor = Color.FromArgb(37, 38, 38);
+                    ConnDisconnButton.BackColor = Color.FromArgb(52, 54, 54);
                     ConnDisconnButton.ForeColor = Color.FromArgb(252, 247, 247);
-                    ExitButton.BackColor = Color.FromArgb(37, 38, 38);
+                    ExitButton.BackColor = Color.FromArgb(52, 54, 54);
                     ExitButton.ForeColor = Color.FromArgb(222, 60, 60);
 
-                    Customization.BackColor = Color.FromArgb(37, 38, 38);
+                    Customization.BackColor = Color.FromArgb(57, 58, 58);
                     Customization.ForeColor = Color.FromArgb(252, 247, 247);
-                    ChatThemesList.BackColor = Color.FromArgb(37, 38, 38);
+                    ChatThemesList.BackColor = Color.FromArgb(77, 78, 78);
                     ChatThemesList.ForeColor = Color.FromArgb(252, 247, 247);
 
                     OutputMessage.BackColor = Color.FromArgb(37, 38, 38);
@@ -399,8 +355,11 @@ namespace Client10
                     InputMessage.BackColor = Color.FromArgb(37, 38, 38);
                     InputMessage.ForeColor = Color.FromArgb(252, 247, 247);
 
-                    SendButton.BackColor = Color.FromArgb(37, 38, 38);
-                    SendButton.ForeColor = Color.White;
+                    SendButton.BackColor = Color.FromArgb(52, 54, 54);
+                    SendButton.ForeColor = Color.FromArgb(252, 247, 247);
+
+                    this.ActiveControl = InputMessage;
+
                     break;
                 case 1:
                     ChatThemesList.Text = "LightTheme";
@@ -439,6 +398,9 @@ namespace Client10
 
                     SendButton.BackColor = Color.FromArgb(252, 247, 247);
                     SendButton.ForeColor = Color.Black;
+
+                    this.ActiveControl = InputMessage;
+
                     break;
             }
         }

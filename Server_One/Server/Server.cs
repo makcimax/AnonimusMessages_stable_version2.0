@@ -40,11 +40,11 @@ namespace Server
                 {
                     if (allAbonents[index].status == Status.Online)
                     {
-                        links[index].cbSendMessage(sender.name, message);
+                        //links[index].cbSendMessage(sender.name, message);
                     }
                     else
                     {
-                        dataBaseOfMsg.AddMessageToDb(sender.id, allAbonents[index].id, message);
+                        //dataBaseOfMsg.AddMessageToDb(sender.id, allAbonents[index].id, message);
                     }
                 }
 
@@ -56,14 +56,14 @@ namespace Server
                 {
                     if (allAbonents[index].status == Status.Online)
                     {
-                        links[index].cbSendMessage(sender.name, message);
+                       links[index].cbSendMessage(sender.name, message);
                     }
                     else
                     {
                         dataBaseOfMsg.AddMessageToDb(senderId, index, message); //сохранить сообщение в базу данных
                     }
                 }
-                links[senderId].cbSendMessage(sender.name, message);
+                //links[senderId].cbSendMessage(sender.name, message);
             }
         }
         public Dictionary<int, Abonent> ShowAbonents(int id) 
