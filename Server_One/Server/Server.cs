@@ -66,7 +66,7 @@ namespace Server
                 links[senderId].cbSendMessage(sender.name, message);
             }
         }
-        public Dictionary<int, Abonent> ShowAbonents(int id) //убрать аргумент
+        public Dictionary<int, Abonent> ShowAbonents(int id) 
         {
             return allAbonents;
         }
