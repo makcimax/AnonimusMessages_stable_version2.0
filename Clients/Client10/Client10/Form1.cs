@@ -69,7 +69,6 @@ namespace Client10
             client = null;
             status = Status.Offline;
 
-            //DrawAbonentList(userName, status,allAbonents);
             AbonentList.Items.Clear();
 
             OutputMessage.ReadOnly  = true;
@@ -134,9 +133,7 @@ namespace Client10
                         client.SendMessage(id, destination.ToArray(), InputMessage.Text);
                     }
                 }
-
-                OutputMessage.Text +="You: " + InputMessage.Text + "\r";
-
+                
                 InputMessage.Clear();
                                                
                 this.ActiveControl = InputMessage;
@@ -240,10 +237,8 @@ namespace Client10
                 AbonentList.Items.Add(tmpUserName + ": " + tmpUserStatus);
             else
                 AbonentList.Items[tmpUserIndex] = tmpUserName + ": " + tmpUserStatus;
-<<<<<<< HEAD
             //AbonentList.Items.Add(MakeName(tmpUserName, tmpUserStatus, maxSizeName));
-=======
->>>>>>> ab463a87df9df8cf2016453b6d7a33c36c0dbb59
+
 
             AbonentList.Items.Remove(userName + ": " + status);
             //AbonentList.Items.Remove(MakeName(userName, status, maxSizeName));
@@ -255,12 +250,8 @@ namespace Client10
         }
         public void cbShowAbonent(Abonent abonent)
         {
-<<<<<<< HEAD
-=======
-
             //int index = in_List(abonent.name);
             //AbonentList.Items[index] = abonent.name + ": " + abonent.status;
->>>>>>> ab463a87df9df8cf2016453b6d7a33c36c0dbb59
             DrawAbonentList(abonent.name, abonent.status, allAbonents);
         }
 
@@ -310,12 +301,10 @@ namespace Client10
         private void ShowButton_Click(object sender, EventArgs e)
         {
             allAbonents = client.ShowAbonents(id);
-<<<<<<< HEAD
-            DrawAbonentList(userName, status, allAbonents);
-=======
+
+            //DrawAbonentList(userName, status, allAbonents);
             DrawAbonentList(userName, status,allAbonents);
             //MessageBox.Show("Отрисовал, проверяй");
->>>>>>> ab463a87df9df8cf2016453b6d7a33c36c0dbb59
         }
 
         private void ForAllCheck_Click(object sender, EventArgs e)

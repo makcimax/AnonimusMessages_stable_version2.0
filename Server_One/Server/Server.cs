@@ -73,7 +73,7 @@ namespace Server
 
         public List<Message> ProvideMessage(int id)
         {   
-            return dataBaseOfMsg.TakeMessagesFromDb(allAbonents[id].id); 
+            return dataBaseOfMsg.GetMessagesFromDb(allAbonents[id].id); 
         }
 
         public int Connect(string name)
@@ -103,7 +103,7 @@ namespace Server
                     status = Status.Online 
                 };
 
-                dataBaseOfAbonents.AddAbonentInDb(abonent.id,abonent.name);
+                dataBaseOfAbonents.AddAbonentToDb(abonent.id,abonent.name);
 
                 allAbonents.Add(idAbonent++,abonent);
                 links[abonent.id] = OperationContext.Current.GetCallbackChannel<IMessageCallback>();
