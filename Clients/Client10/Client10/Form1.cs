@@ -6,6 +6,16 @@ using Client10.Service;
 using System.ServiceModel;
 using System.Drawing;
 
+//TODO
+//Перенос строки
+//Проверка на работу сервера
+//Название index
+//Придумайй более удобное обращение к клиенту
+//
+
+
+
+
 namespace Client10
 {
     public partial class Chat : Form, IServerCallback
@@ -21,7 +31,8 @@ namespace Client10
             this.ActiveControl = InputName;
         }
         private void ConnectMethod()
-        {
+        {            
+
             if (InputName.Text.Trim() == "")
             {
                 MessageBox.Show("Incorrect data!!! Try again");
@@ -133,7 +144,9 @@ namespace Client10
                         client.SendMessage(id, destination.ToArray(), InputMessage.Text);
                     }
                 }
-                
+
+                OutputMessage.Text += "You: " + InputMessage.Text;
+
                 InputMessage.Clear();
                                                
                 this.ActiveControl = InputMessage;
@@ -151,7 +164,16 @@ namespace Client10
         {
             if (status == Status.Online)
             {
-                DisconnectMethod();
+                try
+                {
+
+                    DisconnectMethod();
+                }
+                catch
+                {
+
+                }
+
                 Application.Exit();
             }
             else
@@ -160,7 +182,7 @@ namespace Client10
             }
         }
 
-        private int in_List(string userName)
+        private int In_List(string userName)
         {
             int index = -1;
             for (int i = 0; i < AbonentList.Items.Count; ++i)
@@ -217,7 +239,7 @@ namespace Client10
 
             foreach (int index in allUsers.Keys)
             {
-                tmpUserIndex = in_List(allUsers[index].name);
+                tmpUserIndex = In_List(allUsers[index].name);
 
                 if (tmpUserIndex == -1)
                 {
@@ -231,7 +253,7 @@ namespace Client10
                 }
             }
 
-            tmpUserIndex = in_List(tmpUserName);
+            tmpUserIndex = In_List(tmpUserName);
 
             if (tmpUserIndex == -1)
                 AbonentList.Items.Add(tmpUserName + ": " + tmpUserStatus);
@@ -250,8 +272,6 @@ namespace Client10
         }
         public void cbShowAbonent(Abonent abonent)
         {
-            //int index = in_List(abonent.name);
-            //AbonentList.Items[index] = abonent.name + ": " + abonent.status;
             DrawAbonentList(abonent.name, abonent.status, allAbonents);
         }
 
@@ -263,7 +283,14 @@ namespace Client10
             }
             else
             {
-                ConnectMethod();
+                try
+                {
+                    ConnectMethod();
+                }
+                catch
+                {
+                    MessageBox.Show("Sorry, chat is unavailable now");
+                }
             }
         }
 
@@ -286,7 +313,14 @@ namespace Client10
         {
             if (e.KeyCode == Keys.Enter)
             {
-                ConnectMethod();
+                try
+                {
+                    ConnectMethod();
+                }
+                catch
+                {
+                    MessageBox.Show("Sorry, chat is unavailable now");
+                }
             }
         }
 
