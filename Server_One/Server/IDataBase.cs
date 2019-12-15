@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    interface IDataOfMessages
+    public interface IDataBase
     {
         void AddMessageToDb(int senderId, int recipientId, string textOfMessage);
         List<Message> GetMessagesFromDb(int recipientId);
-    }
 
-    interface IDataOfAbonents
-    {
         void AddAbonentToDb(int _id, string _name);
         Dictionary<int, Abonent> GetAbonentFromDb();
     }
+
+ 
 
 
 }

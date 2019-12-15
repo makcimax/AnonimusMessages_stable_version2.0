@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Server
 {
-    public class DataBaseOfMessages : DbContext,IDataOfMessages
+    public class DataBase : DbContext,IDataBase
     {
-        public DataBaseOfMessages() : base("ConnectionStringToDbOfMsg1")
+        public DataBase(string connectionString = "DataBase") : base(connectionString)
         {
         }
 
@@ -15,9 +15,15 @@ namespace Server
             get; set;
         }
 
-     public void AddMessageToDb(int senderId, int recipientId, string textOfMessage)
+
+        public DbSet<Abonent> Abonents
         {
-            var context = new DataBaseOfMessages();
+            get; set;
+        }
+
+        public void AddMessageToDb(int senderId, int recipientId, string textOfMessage)
+        {
+            
             
                 var message = new Message()
                 {
@@ -26,65 +32,45 @@ namespace Server
                     TextOfMessage = textOfMessage
                 };
 
-                context.Messages.Add(message);
-                context.SaveChanges();
-         
+                this.Messages.Add(message);
+                this.SaveChanges();
         }
 
         public List<Message> GetMessagesFromDb(int recipientId)
         {
-            var context = new DataBaseOfMessages();
-            
-                List<Message> messagesInDb = (context.Messages.Where(i => i.RecipientId == recipientId)).ToList();
+
+                List<Message> messagesInDb = (this.Messages.Where(i => i.RecipientId == recipientId)).ToList();
 
                 foreach (Message message in messagesInDb)
-                    context.Messages.Remove(message);
+                    this.Messages.Remove(message);
 
-                context.SaveChanges();
+                this.SaveChanges();
                 return messagesInDb;
             
         }
 
-    }
 
-
-    public class DataBaseOfAbonents : DbContext, IDataOfAbonents
-    {
-        public DataBaseOfAbonents() : base("ConnectionStringToDbOfAbonents1")
-        {
-
-        }
-
-        public DbSet<Abonent> Abonents
-        {
-            get; set;
-
-        }
+      
 
         public void AddAbonentToDb(int _id, string _name)
         {
-            var context = new DataBaseOfAbonents();
-           
+            var abonent = new Abonent
+            {
+                id = _id,
+                name = _name,
+                status = Status.Offline
+            };
 
-                var abonent = new Abonent
-                {
-                    id = _id,
-                    name = _name,
-                    status = Status.Offline
-                };
+            this.Abonents.Add(abonent);
+            this.SaveChanges();
 
-                context.Abonents.Add(abonent);
-                context.SaveChanges();
-            
         }
-      public Dictionary<int, Abonent> GetAbonentFromDb()
+        public Dictionary<int, Abonent> GetAbonentFromDb()
         {
-            var context = new DataBaseOfAbonents();
+            Dictionary<int, Abonent> abonentsInDb = this.Abonents.ToDictionary(x => x.id, x => x);
+            return abonentsInDb;
 
-                Dictionary<int, Abonent> abonentsInDb = context.Abonents.ToDictionary(x => x.id, x => x);
-
-                return abonentsInDb;
-            
         }
+
     }
 }

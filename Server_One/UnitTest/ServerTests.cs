@@ -17,9 +17,9 @@ namespace UnitTest
         {
             //Server server = new Server();
             Program a = new Program();
-            a.
+            //a.
             //Server server = new Server();
-            Assert.AreEqual(0, 0);
+            //Assert.AreEqual(0, 0);
         }
     }
 }

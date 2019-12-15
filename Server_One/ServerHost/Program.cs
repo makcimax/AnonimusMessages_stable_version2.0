@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ServerHost
 {
@@ -11,7 +8,10 @@ namespace ServerHost
     {
         static void Main()
         {
-            using (var host = new ServiceHost(typeof(Server.Server)))
+           // var dataBase = new Server.DataBase();
+           // var server = new Server.Server(dataBase);
+           var server = new Server.Server();
+            using (var host = new ServiceHost(server))
             {
                 host.Open();
                 Console.WriteLine("Start host");
