@@ -5,6 +5,13 @@ using System.ServiceModel;
 
 namespace Server
 {
+    public class test
+    {
+        public int x = 0;
+    }
+
+
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
         ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class Server : IServer
@@ -40,11 +47,11 @@ namespace Server
                 {
                     if (allAbonents[index].status == Status.Online)
                     {
-                        //links[index].cbSendMessage(sender.name, message);
+                        links[index].cbSendMessage(sender.name, message);
                     }
                     else
                     {
-                        //dataBaseOfMsg.AddMessageToDb(sender.id, allAbonents[index].id, message);
+                        dataBaseOfMsg.AddMessageToDb(sender.id, allAbonents[index].id, message);
                     }
                 }
 

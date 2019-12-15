@@ -6,7 +6,7 @@ namespace Server
 {
     public class DataBaseOfMessages : DbContext,IDataOfMessages
     {
-        public DataBaseOfMessages() : base("ConnectionStringToDbOfMsg")
+        public DataBaseOfMessages() : base("ConnectionStringToDbOfMsg1")
         {
         }
 
@@ -50,7 +50,7 @@ namespace Server
 
     public class DataBaseOfAbonents : DbContext, IDataOfAbonents
     {
-        public DataBaseOfAbonents() : base("ConnectionStringToDbOfAbonents")
+        public DataBaseOfAbonents() : base("ConnectionStringToDbOfAbonents1")
         {
 
         }

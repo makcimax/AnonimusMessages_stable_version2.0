@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServerHost
 {
-    class Program
+    public class Program
     {
         static void Main()
         {
@@ -17,10 +17,6 @@ namespace ServerHost
                 Console.WriteLine("Start host");
                 Console.ReadLine();
             }
-
-
-
-
         }
     }
 }
