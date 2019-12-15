@@ -41,6 +41,13 @@ namespace Client10
 
                 userName = InputName.Text.Trim();
                 id = client.Connect(userName);
+
+                if (id == -1)
+                {
+                    MessageBox.Show("Error. Current user already online");
+                    return;
+                }
+
                 status = Status.Online;
                 allAbonents = client.ShowAbonents(id);
 
@@ -136,11 +143,18 @@ namespace Client10
                     }
                     else 
                     {
-                        client.SendMessage(id, destination.ToArray(), InputMessage.Text);
+                        if (destination.Count == AbonentList.Items.Count)
+                        {
+                            client.SendMessage(id, null, InputMessage.Text);
+                        }
+                        else
+                        {
+                            client.SendMessage(id, destination.ToArray(), InputMessage.Text);
+                        }
                     }
                 }
 
-                OutputMessage.Text += "You: " + InputMessage.Text + "\r";
+                //OutputMessage.Text += "You: " + InputMessage.Text + "\r";
 
                 InputMessage.Clear();
                                                
