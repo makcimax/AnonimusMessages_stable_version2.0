@@ -165,7 +165,7 @@ namespace Client10
                 }
                 catch
                 {
-                    
+
                 }
 
                 Application.Exit();
@@ -235,7 +235,16 @@ namespace Client10
         {
             if (status == Status.Online)
             {
-                ExitMethod();             
+                try
+                {
+                    DisconnectMethod();          
+                }
+                catch
+                {
+                    MessageBox.Show("Server doesn't work now. The app will be closed");
+                    Application.Exit();
+                }
+
             }
             else
             {
