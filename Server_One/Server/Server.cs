@@ -23,9 +23,9 @@ namespace Server
         
         private int idAbonent;
 
-        public Server(/*IDataBase dataBase*/)
+        public Server(IDataBase dataBase)
         {
-            IDataBase dataBase = new DataBase();
+            // dataBase = new DataBase();
             _dataBase = dataBase;
            
             allAbonents = _dataBase.GetAbonentFromDb();
