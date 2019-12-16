@@ -15,7 +15,6 @@ namespace Server
             get; set;
         }
 
-
         public DbSet<Abonent> Abonents
         {
             get; set;

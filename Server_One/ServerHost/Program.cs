@@ -8,9 +8,8 @@ namespace ServerHost
     {
         static void Main()
         {
-            var dataBase = new Server.DataBase("123");
+            var dataBase = new Server.DataBase("dataBase");
             var server = new Server.Server(dataBase);
-           //var server = new Server.Server();
             using (var host = new ServiceHost(server))
             {
                 host.Open();

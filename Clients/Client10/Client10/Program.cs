@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.ServiceModel;
-using Client10.Service;
 
 namespace Client10
 {

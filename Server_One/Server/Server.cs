@@ -5,13 +5,7 @@ using System.ServiceModel;
 
 namespace Server
 {
-    public class test
-    {
-        public int x = 0;
-    }
-
-
-
+  
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
         ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class Server : IServer
@@ -25,7 +19,6 @@ namespace Server
 
         public Server(IDataBase dataBase)
         {
-            // dataBase = new DataBase();
             _dataBase = dataBase;
            
             allAbonents = _dataBase.GetAbonentFromDb();

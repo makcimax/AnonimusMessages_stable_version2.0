@@ -1,9 +1,10 @@
-﻿using System;
+﻿
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace UnitTest
 {
-    using Server;
+
     using ServerHost;
+
     [TestClass]
     public class ServerTests
     {
@@ -15,11 +16,12 @@ namespace UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-            //Server server = new Server();
-            Program a = new Program();
-            //a.
-            //Server server = new Server();
-            //Assert.AreEqual(0, 0);
+            var dataBase = new Server.DataBase("BD");
+            var server = new Server.Server(dataBase);
+            var client = new Client10.Chat();
+
+            client.ConnectMethod();
+            //server.Connect("max");
         }
     }
 }
