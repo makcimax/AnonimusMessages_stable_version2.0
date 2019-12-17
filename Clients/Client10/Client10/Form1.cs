@@ -10,7 +10,7 @@ namespace Client10
     public partial class Chat : Form, IServerCallback
     {
         Dictionary<int, Abonent> allAbonents;
-        ServerClient client = null;
+        IServer _client = null;
         Abonent abonentCurrent = new Abonent();
         //Status status = Status.Offline;
         //string userName = "";
@@ -30,21 +30,11 @@ namespace Client10
             allAbonents[abonent.id] = abonent;
             DrawAbonentList();
         }
-        private void ConnectMethod()
-        {            
-
-            if (InputName.Text.Trim() == "")
-            {
-                MessageBox.Show("Incorrect data!!! Try again");
-                return;
-            }
-            else
-            {
-
-                InstanceContext i = new InstanceContext(this);
-                client = new ServerClient(i);
-                abonentCurrent.name = InputName.Text.Trim();
-                abonentCurrent.id = client.Connect(abonentCurrent.name);
+        public void ConnectMethod(IServer client,string name)
+        {
+            _client = client;
+            abonentCurrent.name = name;
+                abonentCurrent.id = _client.Connect(abonentCurrent.name);
 
                 if (abonentCurrent.id == -1)
                 {
@@ -53,7 +43,7 @@ namespace Client10
                 }
 
                 abonentCurrent.status = Status.Online;
-                allAbonents = client.ShowAbonents(abonentCurrent.id);
+                allAbonents = _client.ShowAbonents(abonentCurrent.id);
 
                 OutputMessage.ReadOnly  = false;
                 SendButton.Enabled      = true;
@@ -67,7 +57,7 @@ namespace Client10
 
                // allAbonents.Remove(abonentCurrent.id);
                 DrawAbonentList();
-                var h = client.ProvideMessage(abonentCurrent.id);
+                var h = _client.ProvideMessage(abonentCurrent.id);
 
                 foreach (var index in h)
                 {
@@ -77,12 +67,12 @@ namespace Client10
                 }
 
                 this.ActiveControl = InputMessage;                
-            }
+            
         }
         private void DisconnectMethod()
         {
-            client.Disconnect(abonentCurrent.id);
-            client = null;
+            _client.Disconnect(abonentCurrent.id);
+            _client = null;
             abonentCurrent.status = Status.Offline;
             AbonentList.Items.Clear();
             OutputMessage.ReadOnly  = true;
@@ -111,11 +101,11 @@ namespace Client10
 
             return id;
         }
-        private void SendMethod()
+        public void SendMethod(int senderId,int[] recipientId, string message)
         {
-            InputMessage.Text = InputMessage.Text.Trim();
+            message = message.Trim();
 
-            if (InputMessage.Text == "")
+            if (message == "")
             {
                 return;
             }
@@ -123,35 +113,24 @@ namespace Client10
             {
                 if (ForAllCheck.Text == "Remove")
                 {
-                    client.SendMessage(abonentCurrent.id, null, InputMessage.Text); 
+                    _client.SendMessage(abonentCurrent.id, null, message); 
                 }
                 else 
                 {
-                    List<int> destination = new List<int>();
-
-                    foreach(var index in AbonentList.CheckedIndices)
-                    {
-                        int tmpUserIndex = Convert.ToInt32(index.ToString());
-                        string selectedUser = AbonentList.Items[tmpUserIndex].ToString();
-                        string tmpName = selectedUser.Substring(0, selectedUser.IndexOf(":"));
-
-                        destination.Add(GetId(tmpName));
-                        
-                    }
-                    if (destination.Count == 0)
+                    if (recipientId.Length == 0)
                     {
                         MessageBox.Show("Select a user to send a message");
                         return;
                     }
                     else 
                     {
-                        if (destination.Count == AbonentList.Items.Count)
+                        if (recipientId.Length == AbonentList.Items.Count)
                         {
-                            client.SendMessage(abonentCurrent.id, null, InputMessage.Text);
+                            _client.SendMessage(abonentCurrent.id, null, message);
                         }
                         else
                         {
-                            client.SendMessage(abonentCurrent.id, destination.ToArray(), InputMessage.Text);
+                            _client.SendMessage(abonentCurrent.id, recipientId, message);
                         }
                     }
                 }
@@ -201,7 +180,7 @@ namespace Client10
 
             return index;
         }
-        private void DrawAbonentList()
+        public void DrawAbonentList()
         {
             int tmpUserIndex;
             //int i = 0;
@@ -253,7 +232,19 @@ namespace Client10
             {
                 try
                 {
-                    ConnectMethod();
+                    if (InputName.Text.Trim() == "")
+                    {
+                        MessageBox.Show("Incorrect data!!! Try again");
+                        return;
+                    }
+                    else
+                    {
+                        string name = InputName.Text.Trim();
+                        InstanceContext i = new InstanceContext(this);
+                        var client = new ServerClient(i);
+                        ConnectMethod(client,name);
+                    }
+
                 }
                 catch
                 {
@@ -261,9 +252,26 @@ namespace Client10
                 }
             }
         }
+
+        private List<int> MakeCheckedAbonentList()
+        {
+            List<int> destination = new List<int>();
+
+            foreach(var index in AbonentList.CheckedIndices)
+            {
+                int tmpUserIndex = Convert.ToInt32(index.ToString());
+                string selectedUser = AbonentList.Items[tmpUserIndex].ToString();
+                string tmpName = selectedUser.Substring(0, selectedUser.IndexOf(":"));
+
+                destination.Add(GetId(tmpName));
+            }
+
+            return destination;
+        }
         private void SendButton_Click(object sender, EventArgs e)
         {
-            SendMethod();
+            var destination = MakeCheckedAbonentList();
+            SendMethod(abonentCurrent.id,destination.ToArray(),InputMessage.Text);
         }
         private void ExitButton_Click(object sender, EventArgs e)
         {
@@ -279,7 +287,18 @@ namespace Client10
             {
                 try
                 {
-                    ConnectMethod();
+                    if (InputName.Text.Trim() == "")
+                    {
+                        MessageBox.Show("Incorrect data!!! Try again");
+                        return;
+                    }
+                    else
+                    {
+                        string name = InputName.Text.Trim();
+                        InstanceContext i = new InstanceContext(this);
+                        var client = new ServerClient(i);
+                        ConnectMethod(client, name);
+                    }
                 }
                 catch
                 {
@@ -291,14 +310,15 @@ namespace Client10
         {
             if (e.KeyCode == Keys.Enter)
             {
+                var destination = MakeCheckedAbonentList();
                 InputMessage.Multiline = false;
-                SendMethod();
+                SendMethod(abonentCurrent.id, destination.ToArray(), InputMessage.Text);
                 InputMessage.Multiline = true;
             }
         }
         private void ShowButton_Click(object sender, EventArgs e)
         {
-            allAbonents = client.ShowAbonents(abonentCurrent.id);
+            allAbonents = _client.ShowAbonents(abonentCurrent.id);
             DrawAbonentList();
         }
         private void ForAllCheck_Click(object sender, EventArgs e)
