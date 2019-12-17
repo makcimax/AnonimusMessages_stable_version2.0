@@ -56,7 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abonent.cs" />
+    <Compile Include="BindingCallback.cs" />
     <Compile Include="DataBase.cs" />
+    <Compile Include="IBindingCallback.cs" />
     <Compile Include="IDataBase.cs" />
     <Compile Include="IMessageCallback.cs" />
     <Compile Include="IServer.cs" />

@@ -2,10 +2,13 @@
 
 namespace Server
 {
-    interface ILogger
+    public interface ILogger
     {
         void Logging(string message);
     }
+
+
+
 
     public class ConsoleLogger: ILogger
     {

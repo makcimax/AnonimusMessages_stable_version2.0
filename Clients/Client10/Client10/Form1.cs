@@ -1,78 +1,74 @@
-﻿using Client10.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.ServiceModel;
 using System.Windows.Forms;
-
-//TODO
-//Придумайй более удобное обращение к клиенту
-
-
-
+using Client10.Service;
+using System.ServiceModel;
+using System.Drawing;
 
 namespace Client10
 {
     public partial class Chat : Form, IServerCallback
     {
-        int id;
-        ServerClient client = null;
         Dictionary<int, Abonent> allAbonents;
-        string userName = "";
-        Status status = Status.Offline;
+        ServerClient client = null;
+        Abonent abonentCurrent = new Abonent();
+        //Status status = Status.Offline;
+        //string userName = "";
         public Chat()
         {
             InitializeComponent();
             this.ActiveControl = InputName;
+            abonentCurrent = new Abonent();
+            abonentCurrent.status = Status.Offline;
         }
-        public void ConnectMethod()
+        public void cbSendMessage(string senderName, string message)
         {
+            OutputMessage.Text += senderName + ": " + message + "\r";
+        }
+        public void cbShowAbonent(Abonent abonent)
+        {
+            allAbonents[abonent.id] = abonent;
+            DrawAbonentList();
+        }
+        private void ConnectMethod()
+        {            
 
             if (InputName.Text.Trim() == "")
             {
-
                 MessageBox.Show("Incorrect data!!! Try again");
-                 return;
+                return;
             }
             else
             {
 
                 InstanceContext i = new InstanceContext(this);
                 client = new ServerClient(i);
+                abonentCurrent.name = InputName.Text.Trim();
+                abonentCurrent.id = client.Connect(abonentCurrent.name);
 
-
-
-               userName = InputName.Text.Trim();
-
-               
-
-
-
-                id = client.Connect(userName);
-
-                if (id == -1)
+                if (abonentCurrent.id == -1)
                 {
                     MessageBox.Show("Error. Current user already online");
                     return;
                 }
 
-                status = Status.Online;
-                allAbonents = client.ShowAbonents(id);
+                abonentCurrent.status = Status.Online;
+                allAbonents = client.ShowAbonents(abonentCurrent.id);
 
+                OutputMessage.ReadOnly  = false;
+                SendButton.Enabled      = true;
+                InputMessage.ReadOnly   = false;
+                AbonentList.Enabled     = true;
+                ConnDisconnButton.Text  = "Disconnect";
+                InputName.ReadOnly      = true;
+                ShowButton.Enabled      = true;
+                ForAllCheck.Enabled     = true;
+                this.Text               = abonentCurrent.name + ": "+ abonentCurrent.status;
 
-                OutputMessage.ReadOnly = false;
-                SendButton.Enabled = true;
-                InputMessage.ReadOnly = false;
-                AbonentList.Enabled = true;
-                ConnDisconnButton.Text = "Disconnect";
-                InputName.ReadOnly = true;
-                ShowButton.Enabled = true;
-                ForAllCheck.Enabled = true;
-                this.Text = userName + ": " + status;
+               // allAbonents.Remove(abonentCurrent.id);
+                DrawAbonentList();
+                var h = client.ProvideMessage(abonentCurrent.id);
 
-                DrawAbonentList(userName, status, allAbonents);
-
-                var h = client.ProvideMessage(id);
                 foreach (var index in h)
                 {
                     string recipient = allAbonents[index.SenderId].name;
@@ -80,43 +76,41 @@ namespace Client10
                     OutputMessage.Text += recipient + ": " + index.TextOfMessage + "\r";
                 }
 
-                this.ActiveControl = InputMessage;
+                this.ActiveControl = InputMessage;                
             }
         }
-
         private void DisconnectMethod()
         {
-            client.Disconnect(id);
+            client.Disconnect(abonentCurrent.id);
             client = null;
-            status = Status.Offline;
-
+            abonentCurrent.status = Status.Offline;
             AbonentList.Items.Clear();
-
-            OutputMessage.ReadOnly = true;
+            OutputMessage.ReadOnly  = true;
             OutputMessage.Clear();
-            SendButton.Enabled = false;
-            InputMessage.ReadOnly = true;
-            AbonentList.Enabled = false;
-            ConnDisconnButton.Text = "Connect";
-            InputName.ReadOnly = false;
-            ShowButton.Enabled = false;
-            ForAllCheck.Enabled = false;
-            this.Text = "Login";
-
+            SendButton.Enabled      = false;
+            InputMessage.ReadOnly   = true;
+            AbonentList.Enabled     = false;
+            ConnDisconnButton.Text  = "Connect";
+            InputName.ReadOnly      = false;
+            ShowButton.Enabled      = false;
+            ForAllCheck.Enabled     = false;
+            this.Text               = "Login";
         }
-
-        private int GetId(string name, Dictionary<int, Abonent> allUsers)
+        private int GetId(string name)
         {
             int id = 0;
-            foreach (int ID in allUsers.Keys)
+            foreach(int ID in allAbonents.Keys)
             {
-                if (allUsers[ID].name == name)
+                if (allAbonents[ID].name == name)
+                {
                     id = ID;
+                    break;
+                }
+                    
             }
 
             return id;
         }
-
         private void SendMethod()
         {
             InputMessage.Text = InputMessage.Text.Trim();
@@ -129,43 +123,41 @@ namespace Client10
             {
                 if (ForAllCheck.Text == "Remove")
                 {
-                    client.SendMessage(id, null, InputMessage.Text);
+                    client.SendMessage(abonentCurrent.id, null, InputMessage.Text); 
                 }
-                else
+                else 
                 {
                     List<int> destination = new List<int>();
 
-                    foreach (var index in AbonentList.CheckedIndices)
+                    foreach(var index in AbonentList.CheckedIndices)
                     {
                         int tmpUserIndex = Convert.ToInt32(index.ToString());
                         string selectedUser = AbonentList.Items[tmpUserIndex].ToString();
                         string tmpName = selectedUser.Substring(0, selectedUser.IndexOf(":"));
 
-                        destination.Add(GetId(tmpName, allAbonents));
-
+                        destination.Add(GetId(tmpName));
+                        
                     }
                     if (destination.Count == 0)
                     {
                         MessageBox.Show("Select a user to send a message");
                         return;
                     }
-                    else
+                    else 
                     {
                         if (destination.Count == AbonentList.Items.Count)
                         {
-                            client.SendMessage(id, null, InputMessage.Text);
+                            client.SendMessage(abonentCurrent.id, null, InputMessage.Text);
                         }
                         else
                         {
-                            client.SendMessage(id, destination.ToArray(), InputMessage.Text);
+                            client.SendMessage(abonentCurrent.id, destination.ToArray(), InputMessage.Text);
                         }
                     }
                 }
 
-                //OutputMessage.Text += "You: " + InputMessage.Text + "\r";
-
                 InputMessage.Clear();
-
+                                               
                 this.ActiveControl = InputMessage;
                 ForAllCheck.Text = "All";
             }
@@ -175,11 +167,10 @@ namespace Client10
                 int tmpUserIndex = Convert.ToInt32(index.ToString());
                 AbonentList.SetItemCheckState(tmpUserIndex, CheckState.Unchecked);
             }
-        }
-
+        } 
         private void ExitMethod()
         {
-            if (status == Status.Online)
+            if (abonentCurrent.status == Status.Online)
             {
                 try
                 {
@@ -197,7 +188,6 @@ namespace Client10
                 Application.Exit();
             }
         }
-
         private int In_List(string userName)
         {
             int index = -1;
@@ -211,55 +201,46 @@ namespace Client10
 
             return index;
         }
-
-
-        private void DrawAbonentList(string tmpUserName = "<default>", Status tmpUserStatus = Status.Offline, Dictionary<int, Abonent> allUsers = null)
+        private void DrawAbonentList()
         {
-            int tmpUserIndex = -1;
+            int tmpUserIndex;
+            //int i = 0;
 
-
-
-            foreach (int index in allUsers.Keys)
+            foreach (int index in allAbonents.Keys)
             {
-                tmpUserIndex = In_List(allUsers[index].name);
+
+                tmpUserIndex = In_List(allAbonents[index].name);
 
                 if (tmpUserIndex == -1)
                 {
-                    AbonentList.Items.Add(allUsers[index].name + ": " + allUsers[index].status);
+                    AbonentList.Items.Add(allAbonents[index].name + ": " + allAbonents[index].status); //добавляем в список чекбоксов
+                    //allAbonents[abonent.id] = abonent;
                 }
                 else
                 {
-                    AbonentList.Items[tmpUserIndex] = allUsers[index].name + ": " + allUsers[index].status;
+                    AbonentList.Items[tmpUserIndex] = allAbonents[index].name + ": " + allAbonents[index].status;// обновляем в списке чекбоксов
                 }
+
+                //++i;
             }
 
-            tmpUserIndex = In_List(tmpUserName);
+            //tmpUserIndex = In_List(abonent.name);
 
-            if (tmpUserIndex == -1)
-                AbonentList.Items.Add(tmpUserName + ": " + tmpUserStatus);
-            else
-                AbonentList.Items[tmpUserIndex] = tmpUserName + ": " + tmpUserStatus;
+            //if (tmpUserIndex == -1)
+            //    AbonentList.Items.Add(abonent.name + ": " + abonent.status);
+            //else
+            //    AbonentList.Items[tmpUserIndex] = abonent.name + ": " + abonent.status;
 
 
-            AbonentList.Items.Remove(userName + ": " + status);
+            AbonentList.Items.Remove(abonentCurrent.name + ": " + abonentCurrent.status);
         }
-
-        public void cbSendMessage(string senderName, string message)
-        {
-            OutputMessage.Text += senderName + ": " + message + "\r";
-        }
-        public void cbShowAbonent(Abonent abonent)
-        {
-            DrawAbonentList(abonent.name, abonent.status, allAbonents);
-        }
-
         private void ConnDisconnButton_Click(object sender, EventArgs e)
         {
-            if (status == Status.Online)
+            if (abonentCurrent.status == Status.Online)
             {
                 try
                 {
-                    DisconnectMethod();
+                    DisconnectMethod();          
                 }
                 catch
                 {
@@ -280,22 +261,18 @@ namespace Client10
                 }
             }
         }
-
         private void SendButton_Click(object sender, EventArgs e)
         {
             SendMethod();
         }
-
         private void ExitButton_Click(object sender, EventArgs e)
         {
             ExitMethod();
         }
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             ExitMethod();
         }
-
         private void InputName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -310,7 +287,6 @@ namespace Client10
                 }
             }
         }
-
         private void InputMessage_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -320,13 +296,11 @@ namespace Client10
                 InputMessage.Multiline = true;
             }
         }
-
         private void ShowButton_Click(object sender, EventArgs e)
         {
-            allAbonents = client.ShowAbonents(id);
-            DrawAbonentList(userName, status, allAbonents);
+            allAbonents = client.ShowAbonents(abonentCurrent.id);
+            DrawAbonentList();
         }
-
         private void ForAllCheck_Click(object sender, EventArgs e)
         {
             if (ForAllCheck.Text == "All")
@@ -346,7 +320,6 @@ namespace Client10
                 ForAllCheck.Text = "All";
             }
         }
-
         private void ChatThemesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (ChatThemesList.SelectedIndex)
@@ -435,7 +408,5 @@ namespace Client10
                     break;
             }
         }
-
-
     }
 }

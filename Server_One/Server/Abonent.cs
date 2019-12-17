@@ -20,5 +20,8 @@ namespace Server
 
         [DataMember]
         public Status status { get; set; }
+
+
+
     }
 }

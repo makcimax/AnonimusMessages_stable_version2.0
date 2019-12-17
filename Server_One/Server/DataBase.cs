@@ -62,7 +62,6 @@ namespace Server
 
             this.Abonents.Add(abonent);
             this.SaveChanges();
-
         }
         public Dictionary<int, Abonent> GetAbonentFromDb()
         {
