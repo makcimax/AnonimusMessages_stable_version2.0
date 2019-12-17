@@ -63,6 +63,7 @@
     <Compile Include="IMessageCallback.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />

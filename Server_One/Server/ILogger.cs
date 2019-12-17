@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Server
 {
     public interface ILogger
@@ -7,14 +6,4 @@ namespace Server
         void Logging(string message);
     }
 
-
-
-
-    public class ConsoleLogger: ILogger
-    {
-        public void Logging(string message)
-        {
-            Console.WriteLine(message);
-        }
-    }
 }

@@ -12,8 +12,7 @@ namespace Client10
         Dictionary<int, Abonent> allAbonents;
         IServer _client = null;
         Abonent abonentCurrent = new Abonent();
-        //Status status = Status.Offline;
-        //string userName = "";
+      
         public Chat()
         {
             InitializeComponent();
@@ -55,7 +54,7 @@ namespace Client10
                 ForAllCheck.Enabled     = true;
                 this.Text               = abonentCurrent.name + ": "+ abonentCurrent.status;
 
-               // allAbonents.Remove(abonentCurrent.id);
+               
                 DrawAbonentList();
                 var h = _client.ProvideMessage(abonentCurrent.id);
 
@@ -183,7 +182,7 @@ namespace Client10
         public void DrawAbonentList()
         {
             int tmpUserIndex;
-            //int i = 0;
+            
 
             foreach (int index in allAbonents.Keys)
             {
@@ -193,22 +192,13 @@ namespace Client10
                 if (tmpUserIndex == -1)
                 {
                     AbonentList.Items.Add(allAbonents[index].name + ": " + allAbonents[index].status); //добавляем в список чекбоксов
-                    //allAbonents[abonent.id] = abonent;
+            
                 }
                 else
                 {
                     AbonentList.Items[tmpUserIndex] = allAbonents[index].name + ": " + allAbonents[index].status;// обновляем в списке чекбоксов
                 }
-
-                //++i;
             }
-
-            //tmpUserIndex = In_List(abonent.name);
-
-            //if (tmpUserIndex == -1)
-            //    AbonentList.Items.Add(abonent.name + ": " + abonent.status);
-            //else
-            //    AbonentList.Items[tmpUserIndex] = abonent.name + ": " + abonent.status;
 
 
             AbonentList.Items.Remove(abonentCurrent.name + ": " + abonentCurrent.status);
@@ -270,8 +260,16 @@ namespace Client10
         }
         private void SendButton_Click(object sender, EventArgs e)
         {
-            var destination = MakeCheckedAbonentList();
-            SendMethod(abonentCurrent.id,destination.ToArray(),InputMessage.Text);
+            try
+            {
+                var destination = MakeCheckedAbonentList();
+                SendMethod(abonentCurrent.id, destination.ToArray(), InputMessage.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Server doesn't work now.");
+            }
+            
         }
         private void ExitButton_Click(object sender, EventArgs e)
         {
@@ -318,8 +316,15 @@ namespace Client10
         }
         private void ShowButton_Click(object sender, EventArgs e)
         {
-            allAbonents = _client.ShowAbonents(abonentCurrent.id);
-            DrawAbonentList();
+            try
+            {
+                allAbonents = _client.ShowAbonents(abonentCurrent.id);
+                DrawAbonentList();
+            }
+            catch
+            {
+                MessageBox.Show("Server doesn't work now.");
+            }
         }
         private void ForAllCheck_Click(object sender, EventArgs e)
         {

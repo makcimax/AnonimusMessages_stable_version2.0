@@ -8,7 +8,6 @@ namespace Server
         Online,
         Offline
     }
-
     [DataContract]
     public class Abonent
     {
@@ -20,8 +19,5 @@ namespace Server
 
         [DataMember]
         public Status status { get; set; }
-
-
-
     }
 }

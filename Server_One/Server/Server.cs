@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System;
 
 
 namespace Server
@@ -8,7 +9,7 @@ namespace Server
   
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
         ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    public class Server : IServer
+    public class Server : IServer, IDisposable
     {
         private Dictionary<int, IMessageCallback> links;
         private Dictionary<int, Abonent> allAbonents;
@@ -20,14 +21,25 @@ namespace Server
         private int idAbonent;
 
 
-        //Logger
+        public void Dispose()
+        {
+            foreach (var index in allAbonents.Keys)
+            {
+                if (allAbonents[index].status == Status.Online)
+                {
+                    Disconnect(index);
+                }
+            }
+            GC.SuppressFinalize(this);
+        }
+
         public Server(IDataBase dataBase, ILogger logger, IBindingCallback binding )
         {
 
             _binding = binding;
             _logger = logger;
             _dataBase = dataBase;
-          //  _messageCallback
+       
 
             allAbonents = _dataBase.GetAbonentFromDb();
 
@@ -39,6 +51,11 @@ namespace Server
             idAbonent = allAbonents.Count+1;
         }
 
+        ~Server()
+        {
+            Dispose();
+        }
+            
 
         public Dictionary<int, IMessageCallback> GetLinks()
         {

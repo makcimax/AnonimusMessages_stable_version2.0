@@ -6,7 +6,7 @@ namespace Server
 {
     public class DataBase : DbContext,IDataBase
     {
-        public DataBase(string connectionString = "DataBase") : base(connectionString)
+        public DataBase(string connectionString = "OurDB") : base(connectionString)
         {
         }
 
@@ -22,8 +22,6 @@ namespace Server
 
         public void AddMessageToDb(int senderId, int recipientId, string textOfMessage)
         {
-            
-            
                 var message = new Message()
                 {
                     SenderId = senderId,
@@ -47,10 +45,6 @@ namespace Server
                 return messagesInDb;
             
         }
-
-
-      
-
         public void AddAbonentToDb(int _id, string _name)
         {
             var abonent = new Abonent
@@ -69,6 +63,5 @@ namespace Server
             return abonentsInDb;
 
         }
-
     }
 }
