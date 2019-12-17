@@ -77,7 +77,7 @@ namespace Server
                        _dataBase.AddMessageToDb(senderId, index, message); //сохранить сообщение в базу данных
                     }
                 }
-                //links[senderId].cbSendMessage(sender.name, message);
+                links[senderId].cbSendMessage(sender.name, message);
             }
         }
         public Dictionary<int, Abonent> ShowAbonents(int id) 
