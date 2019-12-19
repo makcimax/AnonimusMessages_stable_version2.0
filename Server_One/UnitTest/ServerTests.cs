@@ -73,13 +73,11 @@ namespace UnitTest
             mockDataBase.Setup(r => r.AddAbonentToDb(1, "1"));
             mockDataBase.Setup(r => r.GetAbonentFromDb()).Returns(allAbonents);
 
-
             Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
             mockLogger.Setup(r => r.Logging("test"));
 
             Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
          
-
             Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
             mockOperationContext.Setup(r => r.GetChannelCallback(It.IsAny<OperationContext>())).Returns(mockCallback.Object);
 
@@ -91,8 +89,6 @@ namespace UnitTest
             //
             mockCallback.Verify(x => x.cbShowAbonent(It.IsAny<Server.Abonent>()));
         }
-
-
 
 
         //тестировать запуск cbShowAbonent
@@ -264,9 +260,7 @@ namespace UnitTest
 
             Assert.AreEqual(links.Count, 2);
             Assert.AreEqual(links[1], null);
-          
-
-            
+         
         }
 
         [TestMethod]
@@ -319,8 +313,6 @@ namespace UnitTest
 
             //
             mockCallback.Verify(x => x.cbShowAbonent(It.IsAny<Server.Abonent>()));
-
         }
-
     }
 }

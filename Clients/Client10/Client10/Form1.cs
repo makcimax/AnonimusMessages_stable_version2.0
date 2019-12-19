@@ -31,41 +31,44 @@ namespace Client10
         }
         public void ConnectMethod(IServer client,string name)
         {
+            //LoadForm load =  new LoadForm();
+            //load.Show();
             _client = client;
             abonentCurrent.name = name;
-                abonentCurrent.id = _client.Connect(abonentCurrent.name);
+            abonentCurrent.id = _client.Connect(abonentCurrent.name);
 
-                if (abonentCurrent.id == -1)
-                {
-                    MessageBox.Show("Error. Current user already online");
-                    return;
-                }
+            if (abonentCurrent.id == -1)
+            {
+                MessageBox.Show("Error. Current user already online");
+                return;
+            }
 
-                abonentCurrent.status = Status.Online;
-                allAbonents = _client.ShowAbonents(abonentCurrent.id);
+            abonentCurrent.status = Status.Online;
+            allAbonents = _client.ShowAbonents(abonentCurrent.id);
 
-                OutputMessage.ReadOnly  = false;
-                SendButton.Enabled      = true;
-                InputMessage.ReadOnly   = false;
-                AbonentList.Enabled     = true;
-                ConnDisconnButton.Text  = "Disconnect";
-                InputName.ReadOnly      = true;
-                ShowButton.Enabled      = true;
-                ForAllCheck.Enabled     = true;
-                this.Text               = abonentCurrent.name + ": "+ abonentCurrent.status;
+            OutputMessage.ReadOnly  = false;
+            SendButton.Enabled      = true;
+            InputMessage.ReadOnly   = false;
+            AbonentList.Enabled     = true;
+            ConnDisconnButton.Text  = "Disconnect";
+            InputName.ReadOnly      = true;
+            ShowButton.Enabled      = true;
+            ForAllCheck.Enabled     = true;
+            this.Text               = abonentCurrent.name + ": "+ abonentCurrent.status;
 
                
-                DrawAbonentList();
-                var h = _client.ProvideMessage(abonentCurrent.id);
+            DrawAbonentList();
+            var h = _client.ProvideMessage(abonentCurrent.id);
 
-                foreach (var index in h)
-                {
-                    string recipient = allAbonents[index.SenderId].name;
+            foreach (var index in h)
+            {
 
-                    OutputMessage.Text += recipient + ": " + index.TextOfMessage + "\r";
-                }
+                string recipient = allAbonents[index.SenderId].name;
 
-                this.ActiveControl = InputMessage;                
+                OutputMessage.Text += recipient + ": " + index.TextOfMessage + "\r";
+            }
+
+            this.ActiveControl = InputMessage;                
             
         }
         private void DisconnectMethod()
@@ -139,12 +142,20 @@ namespace Client10
                 this.ActiveControl = InputMessage;
                 ForAllCheck.Text = "All";
             }
-
-            foreach (var index in AbonentList.CheckedIndices)
+            
+            if (recipientId.Length > 1)
             {
-                int tmpUserIndex = Convert.ToInt32(index.ToString());
-                AbonentList.SetItemCheckState(tmpUserIndex, CheckState.Unchecked);
+                foreach (var index in AbonentList.CheckedIndices)
+                {
+                    int tmpUserIndex = Convert.ToInt32(index.ToString());
+                    AbonentList.SetItemCheckState(tmpUserIndex, CheckState.Unchecked);
+                }
             }
+            else 
+            {
+
+            }
+            
         } 
         private void ExitMethod()
         {
@@ -220,21 +231,19 @@ namespace Client10
             }
             else
             {
+                if (InputName.Text.Trim() == "")
+                {
+                    MessageBox.Show("Incorrect data!!! Try again");
+                    return;
+                }
+
+                string name = InputName.Text.Trim();
+                InstanceContext i = new InstanceContext(this);
+                var client = new ServerClient(i);
+
                 try
                 {
-                    if (InputName.Text.Trim() == "")
-                    {
-                        MessageBox.Show("Incorrect data!!! Try again");
-                        return;
-                    }
-                    else
-                    {
-                        string name = InputName.Text.Trim();
-                        InstanceContext i = new InstanceContext(this);
-                        var client = new ServerClient(i);
-                        ConnectMethod(client,name);
-                    }
-
+                    ConnectMethod(client,name);
                 }
                 catch
                 {

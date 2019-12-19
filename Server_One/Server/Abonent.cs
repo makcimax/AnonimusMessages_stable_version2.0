@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
+
 namespace Server
 {
     public enum Status
@@ -19,5 +20,6 @@ namespace Server
 
         [DataMember]
         public Status status { get; set; }
+
     }
 }

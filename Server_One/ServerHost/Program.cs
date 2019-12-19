@@ -8,7 +8,7 @@ namespace ServerHost
     {
         static void Main()
         {
-            var dataBase = new Server.DataBase("OurDataBase");
+            var dataBase = new Server.DataBase("OurNewDataBase");
             var logger = new Server.ConsoleLogger();
             var binding = new Server.BindingCallback();
 
