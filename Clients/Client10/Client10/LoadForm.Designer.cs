@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoadForm));
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.LoadBar = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // progressBar1
+            // LoadBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 41);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(201, 23);
-            this.progressBar1.TabIndex = 0;
+            this.LoadBar.Location = new System.Drawing.Point(12, 41);
+            this.LoadBar.Name = "LoadBar";
+            this.LoadBar.Size = new System.Drawing.Size(201, 23);
+            this.LoadBar.TabIndex = 0;
             // 
             // label1
             // 
@@ -58,7 +58,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(58)))), ((int)(((byte)(58)))));
             this.ClientSize = new System.Drawing.Size(225, 94);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.LoadBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(225, 94);
@@ -73,7 +73,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar LoadBar;
         private System.Windows.Forms.Label label1;
     }
 }

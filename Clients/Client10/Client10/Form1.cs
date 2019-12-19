@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Client10.Service;
 using System.ServiceModel;
 using System.Drawing;
+using System.Threading;
 
 namespace Client10
 {
@@ -12,13 +13,23 @@ namespace Client10
         Dictionary<int, Abonent> allAbonents;
         IServer _client = null;
         Abonent abonentCurrent = new Abonent();
-      
+        Thread thread;
+        static LoadForm loadForm;
+
         public Chat()
         {
+            
             InitializeComponent();
             this.ActiveControl = InputName;
             abonentCurrent = new Abonent();
             abonentCurrent.status = Status.Offline;
+        }
+
+        static public void Loading()
+        {
+            loadForm = new LoadForm();
+            Application.Run(loadForm);
+            
         }
         public void cbSendMessage(string senderName, string message)
         {
@@ -31,18 +42,19 @@ namespace Client10
         }
         public void ConnectMethod(IServer client,string name)
         {
-            //LoadForm load =  new LoadForm();
-            //load.Show();
+            
             _client = client;
             abonentCurrent.name = name;
             abonentCurrent.id = _client.Connect(abonentCurrent.name);
 
             if (abonentCurrent.id == -1)
             {
+                thread.Abort();
+                ConnDisconnButton.Enabled = true;
                 MessageBox.Show("Error. Current user already online");
+                this.ActiveControl = InputName;
                 return;
             }
-
             abonentCurrent.status = Status.Online;
             allAbonents = _client.ShowAbonents(abonentCurrent.id);
 
@@ -56,7 +68,6 @@ namespace Client10
             ForAllCheck.Enabled     = true;
             this.Text               = abonentCurrent.name + ": "+ abonentCurrent.status;
 
-               
             DrawAbonentList();
             var h = _client.ProvideMessage(abonentCurrent.id);
 
@@ -67,6 +78,10 @@ namespace Client10
 
                 OutputMessage.Text += recipient + ": " + index.TextOfMessage + "\r";
             }
+
+
+            thread.Abort();
+            ConnDisconnButton.Enabled = true;
 
             this.ActiveControl = InputMessage;                
             
@@ -231,15 +246,20 @@ namespace Client10
             }
             else
             {
+                
                 if (InputName.Text.Trim() == "")
                 {
                     MessageBox.Show("Incorrect data!!! Try again");
+                    this.ActiveControl = InputName;
                     return;
                 }
 
+               // thread = new Thread(new ThreadStart(Loading));
                 string name = InputName.Text.Trim();
                 InstanceContext i = new InstanceContext(this);
                 var client = new ServerClient(i);
+             //   thread.Start();
+                ConnDisconnButton.Enabled = false;
 
                 try
                 {
@@ -247,6 +267,8 @@ namespace Client10
                 }
                 catch
                 {
+                   // thread.Abort();
+                    ConnDisconnButton.Enabled = true;
                     MessageBox.Show("Sorry, chat is unavailable now. Try later");
                 }
             }
@@ -292,23 +314,28 @@ namespace Client10
         {
             if (e.KeyCode == Keys.Enter)
             {
+                if (InputName.Text.Trim() == "")
+                {
+                    MessageBox.Show("Incorrect data!!! Try again");
+                    this.ActiveControl = InputName;
+                    return;
+                }
+
+               // thread = new Thread(new ThreadStart(Loading));
+                string name = InputName.Text.Trim();
+                InstanceContext i = new InstanceContext(this);
+                var client = new ServerClient(i);
+               // thread.Start();
+                ConnDisconnButton.Enabled = false;
+
                 try
                 {
-                    if (InputName.Text.Trim() == "")
-                    {
-                        MessageBox.Show("Incorrect data!!! Try again");
-                        return;
-                    }
-                    else
-                    {
-                        string name = InputName.Text.Trim();
-                        InstanceContext i = new InstanceContext(this);
-                        var client = new ServerClient(i);
-                        ConnectMethod(client, name);
-                    }
+                    ConnectMethod(client, name);
                 }
                 catch
                 {
+                   // thread.Abort();
+                    ConnDisconnButton.Enabled = true;
                     MessageBox.Show("Sorry, chat is unavailable now. Try later");
                 }
             }

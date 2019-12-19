@@ -12,9 +12,29 @@ namespace Client10
 {
     public partial class LoadForm : Form
     {
+        public int  MyProgressBar 
+        {
+            get
+            {
+                return LoadBar.Value;
+            }
+            set
+            {
+                LoadBar.Value = value;
+            }
+        }
+        public void GrowValue(int val = 1)
+        {
+            MyProgressBar += val;
+        }
         public LoadForm()
         {
             InitializeComponent();
+            while (MyProgressBar < 100)
+            {
+                GrowValue(3);
+            }
         }
+
     }
 }
