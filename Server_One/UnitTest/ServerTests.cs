@@ -10,6 +10,26 @@ namespace UnitTest
     [TestClass]
     public class ServerTests
     {
+
+        Moq.Mock<Server.IDataBase> mockDataBase;
+        Moq.Mock<Server.ILogger> mockLogger;
+        Moq.Mock<Server.IMessageCallback> mockCallback;
+        Moq.Mock<Server.IBindingCallback> mockOperationContext;
+
+
+        void SetUp() 
+            {
+            Moq.Mock<Server.IDataBase> mockDataBase = new Moq.Mock<Server.IDataBase>();
+            Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
+            Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
+            Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
+
+        }
+
+
+        
+
+
         [TestMethod]
         public void TestServerConnect()
         {
@@ -22,18 +42,18 @@ namespace UnitTest
 
             Dictionary<int, Server.Abonent> allAbonents = new Dictionary<int, Server.Abonent>();
 
-            Moq.Mock<Server.IDataBase> mockDataBase = new Moq.Mock<Server.IDataBase>();
+          
             mockDataBase.Setup(r => r.AddAbonentToDb(1, "1"));
             mockDataBase.Setup(r => r.GetAbonentFromDb()).Returns(allAbonents);
 
 
-            Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
+          
             mockLogger.Setup(r => r.Logging("test"));
 
-            Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
+           
             mockCallback.Setup(r => r.cbShowAbonent(abonent));
 
-            Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
+           
             mockOperationContext.Setup(r => r.GetChannelCallback(It.IsAny<OperationContext>())).Returns(mockCallback.Object);
 
            
@@ -69,16 +89,11 @@ namespace UnitTest
 
             Dictionary<int, Server.Abonent> allAbonents = new Dictionary<int, Server.Abonent>();
 
-            Moq.Mock<Server.IDataBase> mockDataBase = new Moq.Mock<Server.IDataBase>();
             mockDataBase.Setup(r => r.AddAbonentToDb(1, "1"));
             mockDataBase.Setup(r => r.GetAbonentFromDb()).Returns(allAbonents);
 
-            Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
             mockLogger.Setup(r => r.Logging("test"));
 
-            Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
-         
-            Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
             mockOperationContext.Setup(r => r.GetChannelCallback(It.IsAny<OperationContext>())).Returns(mockCallback.Object);
 
                  var server = new Server.Server(mockDataBase.Object, mockLogger.Object, mockOperationContext.Object);
@@ -116,21 +131,15 @@ namespace UnitTest
 
             Dictionary<int, Server.Abonent> allAbonents = new Dictionary<int, Server.Abonent>();
 
-            Moq.Mock<Server.IDataBase> mockDataBase = new Moq.Mock<Server.IDataBase>();
             mockDataBase.Setup(r => r.AddAbonentToDb(1, "1"));
             mockDataBase.Setup(r => r.GetAbonentFromDb()).Returns(allAbonents);
             mockDataBase.Setup(r => r.AddMessageToDb(1,2,"test"));
             mockDataBase.Setup(r => r.GetMessagesFromDb(2)).Returns(messages);
 
-
-            Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
             mockLogger.Setup(r => r.Logging("test"));
 
-            Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
             mockCallback.Setup(r => r.cbShowAbonent(abonent));
 
-
-            Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
             mockOperationContext.Setup(r => r.GetChannelCallback(It.IsAny<OperationContext>())).Returns(mockCallback.Object);
 
            
@@ -174,24 +183,17 @@ namespace UnitTest
 
 
             Dictionary<int, Server.Abonent> allAbonents = new Dictionary<int, Server.Abonent>();
-
-            Moq.Mock<Server.IDataBase> mockDataBase = new Moq.Mock<Server.IDataBase>();
             mockDataBase.Setup(r => r.AddAbonentToDb(1, "1"));
             mockDataBase.Setup(r => r.GetAbonentFromDb()).Returns(allAbonents);
            
             mockDataBase.Setup(r => r.GetMessagesFromDb(2)).Returns(messages);
 
-
-            Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
             mockLogger.Setup(r => r.Logging("test"));
 
-            Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
             mockCallback.Setup(r => r.cbShowAbonent(abonent));
             mockCallback.Setup(r => r.cbSendMessage("1", "test"));
 
-            Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
             mockOperationContext.Setup(r => r.GetChannelCallback(It.IsAny<OperationContext>())).Returns(mockCallback.Object);
-
           
             var server = new Server.Server(mockDataBase.Object, mockLogger.Object, mockOperationContext.Object);
             server.Connect("1");
@@ -234,21 +236,17 @@ namespace UnitTest
 
             Dictionary<int, Server.Abonent> allAbonents = new Dictionary<int, Server.Abonent>();
 
-            Moq.Mock<Server.IDataBase> mockDataBase = new Moq.Mock<Server.IDataBase>();
+  
             mockDataBase.Setup(r => r.AddAbonentToDb(1, "1"));
             mockDataBase.Setup(r => r.GetAbonentFromDb()).Returns(allAbonents);
             mockDataBase.Setup(r => r.AddMessageToDb(1, 2, "test"));
             mockDataBase.Setup(r => r.GetMessagesFromDb(2)).Returns(messages);
 
-
-            Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
             mockLogger.Setup(r => r.Logging("test"));
 
-            Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
            mockCallback.Setup(r => r.cbShowAbonent(abonent));
             mockCallback.Setup(r => r.cbSendMessage("1", "test"));
 
-            Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
             mockOperationContext.Setup(r => r.GetChannelCallback(It.IsAny<OperationContext>())).Returns(mockCallback.Object);
 
             var server = new Server.Server(mockDataBase.Object, mockLogger.Object, mockOperationContext.Object);
@@ -287,23 +285,17 @@ namespace UnitTest
 
             Dictionary<int, Server.Abonent> allAbonents = new Dictionary<int, Server.Abonent>();
 
-            Moq.Mock<Server.IDataBase> mockDataBase = new Moq.Mock<Server.IDataBase>();
             mockDataBase.Setup(r => r.AddAbonentToDb(1, "1"));
             mockDataBase.Setup(r => r.GetAbonentFromDb()).Returns(allAbonents);
             mockDataBase.Setup(r => r.AddMessageToDb(1, 2, "test"));
             mockDataBase.Setup(r => r.GetMessagesFromDb(2)).Returns(messages);
 
-            Moq.Mock<Server.ILogger> mockLogger = new Moq.Mock<Server.ILogger>();
             mockLogger.Setup(r => r.Logging("test"));
-
-            Moq.Mock<Server.IMessageCallback> mockCallback = new Moq.Mock<Server.IMessageCallback>();
           
             mockCallback.Setup(r => r.cbSendMessage("1", "test"));
 
-            Moq.Mock<Server.IBindingCallback> mockOperationContext = new Moq.Mock<Server.IBindingCallback>();
             mockOperationContext.Setup(r => r.GetChannelCallback(It.IsAny<OperationContext>())).Returns(mockCallback.Object);
 
-           
             var server = new Server.Server(mockDataBase.Object, mockLogger.Object, mockOperationContext.Object);
             server.Connect("1");
             server.Connect("2");

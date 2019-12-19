@@ -7,6 +7,16 @@ namespace Client.Tests
     [TestClass]
     public class ClientTests
     {
+
+
+
+        void SetUp()
+        {
+
+        }
+
+
+
         [TestMethod]
         public void TestClientConnect()
         {
