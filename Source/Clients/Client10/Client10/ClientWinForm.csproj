@@ -83,25 +83,25 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Connected Services\Service\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\Service\ClientWinForm.Service.Abonent.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\Service\ClientWinForm.Service.Message.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\Service\item.xsd">
+    <None Include="Connected Services\Service\Server.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\Service\item1.xsd">
+    <None Include="Connected Services\Service\service.wsdl" />
+    <None Include="Connected Services\Service\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\Service\item2.xsd">
+    <None Include="Connected Services\Service\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\Service\item3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\Service\Server.wsdl" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -120,9 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\Service\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\Service\item.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\Service\configuration91.svcinfo" />

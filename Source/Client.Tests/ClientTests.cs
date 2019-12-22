@@ -32,7 +32,7 @@ namespace Client.Tests
         [TestMethod]
         public void TestClientConnect()
         {
-            allAbonents.Count;
+           /// allAbonents.Count;
             mockClient.Setup(x => x.ShowAbonents(0)).Returns(allAbonents);
             chat.ConnectMethod(mockClient.Object, "1");
 
