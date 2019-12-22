@@ -59,6 +59,7 @@
             this.InputName.Name = "InputName";
             this.InputName.Size = new System.Drawing.Size(160, 21);
             this.InputName.TabIndex = 2;
+            this.InputName.TextChanged += new System.EventHandler(this.InputName_TextChanged);
             this.InputName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputName_KeyDown);
             // 
             // OutputMessage
@@ -93,6 +94,7 @@
             this.InputMessage.Size = new System.Drawing.Size(486, 75);
             this.InputMessage.TabIndex = 4;
             this.InputMessage.Text = "";
+            this.InputMessage.TextChanged += new System.EventHandler(this.InputMessage_TextChanged);
             this.InputMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputMessage_KeyDown);
             // 
             // SendButton

@@ -144,7 +144,7 @@ namespace ClientWinForm
                     }
                     else 
                     {
-                        if (recipientId.Length == AbonentList.Items.Count)
+                        if (isSendingToAll(recipientId.Length))
                         {
                             _client.SendMessage(abonentCurrent.id, null, message);
                         }
@@ -174,7 +174,15 @@ namespace ClientWinForm
 
             }
             
-        } 
+        }
+
+
+        private bool isSendingToAll(int recipientIdLength)
+        {
+            return (recipientIdLength  == AbonentList.Items.Count);
+        }
+
+
         private void ExitMethod()
         {
             if (abonentCurrent.status == Status.Online)
@@ -478,6 +486,16 @@ namespace ClientWinForm
         }
 
         private void OutputMessage_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InputName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InputMessage_TextChanged(object sender, EventArgs e)
         {
 
         }
