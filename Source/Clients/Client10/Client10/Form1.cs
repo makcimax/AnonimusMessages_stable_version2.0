@@ -177,9 +177,9 @@ namespace ClientWinForm
         }
 
 
-        private bool isSendingToAll(int recipientIdLength)
+        public bool isSendingToAll(int recipientIdLength)
         {
-            return (recipientIdLength  == AbonentList.Items.Count);
+            return (recipientIdLength  == allAbonents.Count);
         }
 
 

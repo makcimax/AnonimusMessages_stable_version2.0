@@ -32,6 +32,7 @@ namespace Client.Tests
         [TestMethod]
         public void TestClientConnect()
         {
+            allAbonents.Count;
             mockClient.Setup(x => x.ShowAbonents(0)).Returns(allAbonents);
             chat.ConnectMethod(mockClient.Object, "1");
 
@@ -39,7 +40,7 @@ namespace Client.Tests
         }
 
         [TestMethod]
-        public void TestClientSend()
+        public void TestClientSendToOne()
         {
             int[] destination = { 1,2};
 
@@ -50,6 +51,22 @@ namespace Client.Tests
             chat.SendMethod(0, destination, "Test");
 
             mockClient.Verify(x => x.SendMessage(0,destination,"Test"));
+        }
+
+
+
+        public void TestClientSendAll()
+        {
+            int[] destination = { 1, 2 };
+
+            mockClient.Setup(x => x.ShowAbonents(0)).Returns(allAbonents);
+           // mockClient.Setup(x => x.(0)).Returns(allAbonents);
+            chat.ConnectMethod(mockClient.Object, "1");
+            mockClient.Setup(x => x.Connect("1"));
+            chat.ConnectMethod(mockClient.Object, "1");
+            chat.SendMethod(0, destination, "Test");
+
+            mockClient.Verify(x => x.SendMessage(0, destination, "Test"));
         }
     }
 }
