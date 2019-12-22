@@ -7,11 +7,17 @@ namespace Client.Tests
     [TestClass]
     public class ClientTests
     {
-
+        ClientWinForm.Service.Abonent abonent;
 
 
         void SetUp()
         {
+            abonent = new ClientWinForm.Service.Abonent()
+            {
+                id = 0,
+                name = "1",
+                status = ClientWinForm.Service.Status.Online
+            };
 
         }
 
@@ -20,12 +26,7 @@ namespace Client.Tests
         public void TestClientConnect()
         {
 
-            var abonent = new ClientWinForm.Service.Abonent()
-            {
-                id = 0,
-                name = "1",
-                status = ClientWinForm.Service.Status.Online
-            };
+          
 
             Dictionary<int, ClientWinForm.Service.Abonent> allAbonents = new Dictionary<int, ClientWinForm.Service.Abonent>();
 
@@ -41,13 +42,6 @@ namespace Client.Tests
         [TestMethod]
         public void TestClientSend()
         {
-            var abonent = new ClientWinForm.Service.Abonent()
-            {
-                id = 0,
-                name = "1",
-                status = ClientWinForm.Service.Status.Online
-            };
-
             Dictionary<int, ClientWinForm.Service.Abonent> allAbonents = new Dictionary<int, ClientWinForm.Service.Abonent>();
 
             allAbonents.Add(1, abonent);
